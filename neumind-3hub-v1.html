@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI for Professionals - A Practical Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: "Warm Neutrals" - Beige, Slate, Soft Teal, and a gentle Coral accent. -->
+    <!-- Application Structure Plan: A single-page educational resource, divided into five thematic sections. A sticky navigation bar provides easy access to each topic. The structure prioritizes clear, focused content blocks (e.g., the C.R.A.F.T. acronym, tool comparisons) with interactive elements like accordions to hide secondary details, keeping the main view uncluttered. This design is ideal for both presentation and as a self-guided leave-behind resource. -->
+    <!-- Visualization & Content Choices: 1. AI Personas: Simple icon-based cards (HTML/CSS) to clearly explain the different AI analogies. 2. C.R.A.F.T. Acronym: An interactive reveal/flashcard element (JS) to make the core framework memorable and engaging. 3. AI Knowledge Flow: A simplified flowchart (HTML/CSS) using the "librarian" analogy to explain grounded vs. general AI. These choices are designed to make abstract concepts tangible and easy to grasp for a non-technical audience. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #334155;
+            font-size: 18px;
+        }
+        .neumind-teal { color: #14B8A6; }
+        .neumind-slate { color: #334155; }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        :root { --brand-blue: #2563EB; }
+        .nav-link:hover, .nav-link.active {
+            color: var(--brand-blue);
+            border-bottom-color: var(--brand-blue);
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            border: 1px solid #E2E8F0;
+        }
+        [x-cloak] { display: none !important; }
+        .craft-card {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        .craft-card.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .craft-card-face {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .craft-card-back {
+            transform: rotateY(180deg);
+        }
+        .neumind-blue { color: var(--brand-blue); }
+        main section + section { border-top: 4px solid var(--brand-blue); padding-top: 2.5rem; margin-top: 2.5rem; }
+    </style>
+</head>
+<body class="antialiased" x-data="{}">
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="http://www.neumind.co.uk" class="mr-3" aria-label="Neumind website"><img src="logo-inline-framed.png" alt="Neumind" class="h-10 w-auto" /></a>                </div>
+                <div class="ml-10 flex items-baseline space-x-4 lg:space-x-8">
+                    <div class=" hidden lg:block">
+                        <a href="#demystify" class="nav-link px-3 py-2 text-sm font-medium text-slate-600">Understanding AI</a>
+                        <a href="#craft" class="nav-link px-3 py-2 text-sm font-medium text-slate-600">The C.R.A.F.T. Method</a>
+                        <a href="#information" class="nav-link px-3 py-2 text-sm font-medium text-slate-600">Supplying Information</a>
+                        <a href="#guardrails" class="nav-link px-3 py-2 text-sm font-medium text-slate-600">Guardrails</a>
+                        <a href="#conclusion" class="nav-link px-3 py-2 text-sm font-medium text-slate-600">Conclusion</a>
+                        
+                    </div>
+                    <a href="https://www.neumind.co.uk/get-started" class="ml-6 inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">Sign up</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold tracking-tight sm:text-5xl neumind-slate">AI for Case Managers & Lawyers</h2>
+            <p class="mt-4 text-lg text-slate-500">A guide to understanding and using AI tools effectively and safely.</p>
+        </div>
+
+        <section id="demystify" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold neumind-slate text-center mb-2">What is Generative AI?</h3>
+            <p class="text-center text-slate-500 mb-10 max-w-3xl mx-auto">Think of AI not as a "brain," but as a powerful assistant. It excels at processing language, but needs clear instructions. It's helpful to imagine AI wearing two different hats.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+                <div class="section-card p-6 text-center">
+                    <div class="text-5xl mb-4">📚</div>
+                    <h4 class="text-xl font-semibold mb-2">The Eager Librarian</h4>
+                    <p class="text-slate-600">AI has read a vast library (most of the internet). It can summarize books, connect ideas, and answer questions based on this huge, general knowledge base. However, it doesn't know which book is most important for your specific question.</p>
+                </div>
+                <div class="section-card p-6 text-center">
+                     <div class="text-5xl mb-4">🎭</div>
+                    <h4 class="text-xl font-semibold mb-2">The Improvising Actor</h4>
+                    <p class="text-slate-600">AI tries to give a convincing performance based on the script (your prompt). If the script is vague, it will improvise to fill the gaps, which can sometimes lead to plausible-sounding inaccuracies (called "hallucinations").</p>
+                </div>
+            </div>
+             <h4 class="text-xl font-semibold text-center mb-6">Common AI Tools</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div class="p-5 bg-white border border-slate-200 rounded-lg text-center">
+                    <div class="text-4xl">💬</div>
+                    <h5 class="font-bold mt-3">ChatGPT</h5>
+                    <p class="text-sm text-slate-500 mt-1">The All-Rounder. Great for brainstorming, drafting emails, and creative writing tasks.</p>
+                </div>
+                <div class="p-5 bg-white border border-slate-200 rounded-lg text-center">
+                    <div class="text-4xl">✨</div>
+                    <h5 class="font-bold mt-3">Gemini</h5>
+                    <p class="text-sm text-slate-500 mt-1">The Researcher. Integrated with Google, useful for tasks requiring up-to-date information.</p>
+                </div>
+                 <div class="p-5 bg-white border border-slate-200 rounded-lg text-center">
+                    <div class="text-4xl">🔎</div>
+                    <h5 class="font-bold mt-3">Perplexity</h5>
+                    <p class="text-sm text-slate-500 mt-1">The Fact-Checker. An "AI search engine" that provides answers with linked sources.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="craft" class="mb-24 scroll-mt-20">
+             <h3 class="text-3xl font-bold neumind-slate text-center mb-2">Getting Better Results: The C.R.A.F.T. Method</h3>
+             <p class="text-center text-slate-500 mb-10 max-w-3xl mx-auto">The quality of the AI's output depends entirely on the quality of your input (the "prompt"). To give the AI a better script, use the C.R.A.F.T. framework. Click each card to reveal more.</p>
+             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+                 <div x-data="{ flipped: false }" class="h-64 [perspective:1000px]" @click="flipped = !flipped">
+                     <div class="craft-card w-full h-full relative" :class="{ 'is-flipped': flipped }">
+                        <div class="craft-card-face absolute w-full h-full flex flex-col items-center justify-center bg-teal-600 text-white rounded-lg p-4">
+                            <div class="text-5xl font-bold">C</div><p class="mt-2 font-semibold">Context</p>
+                         </div>
+                        <div class="craft-card-back absolute w-full h-full flex flex-col items-center justify-center bg-teal-50 text-teal-900 rounded-lg p-4 text-center">
+                            <h5 class="font-bold">Provide Background</h5><p class="text-sm mt-1">Give the essential who, what, why. The more background you provide, the better the AI can tailor its response.</p>
+                         </div>
+                     </div>
+                 </div>
+                 <div x-data="{ flipped: false }" class="h-64 [perspective:1000px]" @click="flipped = !flipped">
+                    <div class="craft-card w-full h-full relative" :class="{ 'is-flipped': flipped }">
+                       <div class="craft-card-face absolute w-full h-full flex flex-col items-center justify-center bg-orange-500 text-white rounded-lg p-4">
+                           <div class="text-5xl font-bold">R</div><p class="mt-2 font-semibold">Role</p>
+                        </div>
+                       <div class="craft-card-back absolute w-full h-full flex flex-col items-center justify-center bg-orange-50 text-orange-900 rounded-lg p-4 text-center">
+                           <h5 class="font-bold">Assign a Persona</h5><p class="text-sm mt-1">Tell the AI who to be. This focuses its tone, style, and knowledge on a specific domain.</p>
+                        </div>
+                    </div>
+                </div>
+                <div x-data="{ flipped: false }" class="h-64 [perspective:1000px]" @click="flipped = !flipped">
+                    <div class="craft-card w-full h-full relative" :class="{ 'is-flipped': flipped }">
+                        <div class="craft-card-face absolute w-full h-full flex flex-col items-center justify-center bg-sky-500 text-white rounded-lg p-4">
+                           <div class="text-5xl font-bold">A</div><p class="mt-2 font-semibold">Action</p>
+                        </div>
+                        <div class="craft-card-back absolute w-full h-full flex flex-col items-center justify-center bg-sky-50 text-sky-900 rounded-lg p-4 text-center">
+                           <h5 class="font-bold">State the Verb</h5><p class="text-sm mt-1">Be explicit about the task. Use clear action words like Summarize, Draft, Explain, Compare, List.</p>
+                        </div>
+                    </div>
+                </div>
+                <div x-data="{ flipped: false }" class="h-64 [perspective:1000px]" @click="flipped = !flipped">
+                    <div class="craft-card w-full h-full relative" :class="{ 'is-flipped': flipped }">
+                        <div class="craft-card-face absolute w-full h-full flex flex-col items-center justify-center bg-indigo-500 text-white rounded-lg p-4">
+                           <div class="text-5xl font-bold">F</div><p class="mt-2 font-semibold">Format</p>
+                        </div>
+                        <div class="craft-card-back absolute w-full h-full flex flex-col items-center justify-center bg-indigo-50 text-indigo-900 rounded-lg p-4 text-center">
+                           <h5 class="font-bold">Define the Output</h5><p class="text-sm mt-1">Specify how you want the answer structured. Examples: bullet points, an email, a table, a paragraph.</p>
+                        </div>
+                    </div>
+                </div>
+                 <div x-data="{ flipped: false }" class="h-64 [perspective:1000px]" @click="flipped = !flipped">
+                    <div class="craft-card w-full h-full relative" :class="{ 'is-flipped': flipped }">
+                        <div class="craft-card-face absolute w-full h-full flex flex-col items-center justify-center bg-slate-700 text-white rounded-lg p-4">
+                           <div class="text-5xl font-bold">T</div><p class="mt-2 font-semibold">Target</p>
+                        </div>
+                        <div class="craft-card-back absolute w-full h-full flex flex-col items-center justify-center bg-slate-100 text-slate-800 rounded-lg p-4 text-center">
+                           <h5 class="font-bold">Know your Audience</h5><p class="text-sm mt-1">Specify who the response is for. This adjusts the complexity, tone, and language used.</p>
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="max-w-4xl mx-auto mt-12">
+                 <div x-data="{ open: false }" class="section-card">
+                     <button @click="open = !open" class="w-full flex justify-between items-center text-left font-semibold p-6">
+                         <span>See a C.R.A.F.T. Prompt in Action: Before & After</span>
+                         <svg :class="{ 'rotate-180': open }" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                     </button>
+                     <div x-show="open" x-cloak class="p-6 border-t border-slate-200">
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                             <div>
+                                 <h5 class="font-bold text-red-600">Before (Weak Prompt)</h5>
+                                 <p class="mt-2 text-sm p-4 bg-red-50 border border-red-200 rounded-md text-slate-700">"Summarize this case file."</p>
+                                 <p class="mt-2 text-sm text-slate-500">This is too vague. The AI doesn't know the purpose, format, or audience, so it will produce a generic, likely unhelpful summary.</p>
+                             </div>
+                             <div>
+                                <h5 class="font-bold text-blue-600">After (C.R.A.F.T. Prompt)</h5>
+                                <div class="mt-2 text-sm p-4 bg-blue-50 border border-blue-200 rounded-md text-slate-700">
+                                    <p><span class="font-bold text-orange-600">[R]</span> Act as a senior legal counsel.</p>
+                                    <p><span class="font-bold text-teal-600">[C]</span> I'm preparing for a client meeting tomorrow regarding case #12345, which involves a complex commercial dispute.</p>
+                                    <p><span class="font-bold text-sky-600">[A]</span> Review the attached deposition transcript and summarize the three most critical admissions made by the opposing party.</p>
+                                    <p><span class="font-bold text-indigo-600">[F]</span> Present these as a bulleted list, with a brief one-sentence explanation for each.</p>
+                                    <p><span class="font-bold text-slate-600">[T]</span> The summary is for me and my junior associate, so legal terminology is acceptable.</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </section>
+
+        <section id="information" class="mb-24 scroll-mt-20">
+             <h3 class="text-3xl font-bold neumind-slate text-center mb-2">Supplying the Right Information to AI</h3>
+             <p class="text-center text-slate-500 mb-10 max-w-3xl mx-auto">Standard AI uses general knowledge. For professional work, you need answers based on specific, trusted information. This is like telling the librarian exactly which bookshelves to use.</p>
+             <div class="section-card p-8">
+                 <div class="flex flex-col md:flex-row items-center justify-around text-center">
+                    <div class="max-w-xs">
+                        <div class="text-5xl">📚</div>
+                        <h4 class="text-lg font-semibold mt-2">Your Secure Knowledge Base</h4>
+                        <p class="text-sm text-slate-500">Case Files, Medical Reports, Internal Policies, Neumind Content</p>
+                    </div>
+                    <div class="text-4xl text-slate-300 my-6 md:my-0">→</div>
+                     <div class="max-w-xs">
+                        <div class="text-5xl">🤖</div>
+                        <h4 class="text-lg font-semibold mt-2">Focused AI Assistant</h4>
+                        <p class="text-sm text-slate-500">The AI is instructed to ONLY use information from your knowledge base to answer questions.</p>
+                    </div>
+                    <div class="text-4xl text-slate-300 my-6 md:my-0">→</div>
+                    <div class="max-w-xs">
+                        <div class="text-5xl">💡</div>
+                        <h4 class="text-lg font-semibold mt-2">Accurate, Relevant Output</h4>
+                        <p class="text-sm text-slate-500">The result is a trustworthy answer, summary, or document grounded in your specific data.</p>
+                    </div>
+                 </div>
+                 <div class="mt-10 border-t border-slate-200 pt-6">
+                     <h4 class="font-semibold text-center text-lg mb-4">This approach enables powerful capabilities:</h4>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                         <div class="bg-slate-50 p-5 rounded-lg">
+                             <h5 class="font-bold">Automated Document Summarization</h5>
+                             <p class="text-sm text-slate-600 mt-1">Quickly extract key findings and recommendations from lengthy reports, saving hours of reading time.</p>
+                         </div>
+                          <div class="bg-slate-50 p-5 rounded-lg">
+                             <h5 class="font-bold">Personalized Client Communication</h5>
+                             <p class="text-sm text-slate-600 mt-1">Generate clear, easy-to-understand resources for clients and their families based on complex case information.</p>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </section>
+
+        <section id="guardrails" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold neumind-slate text-center mb-2">Important Guardrails for Safe Use</h3>
+            <p class="text-center text-slate-500 mb-10 max-w-3xl mx-auto">AI is a powerful tool, but it must be used responsibly, especially when handling sensitive information. Here are the core principles to follow.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="section-card p-6">
+                    <div class="flex items-center">
+                        <div class="text-3xl mr-4">🔒</div>
+                        <h4 class="text-lg font-semibold">Protect Confidential Data</h4>
+                    </div>
+                    <p class="mt-3 text-slate-600">Never input personally identifiable or confidential client information into public AI tools like ChatGPT. Assume that any data you enter could be used for training. Use secure, enterprise-grade platforms (like Neumind) designed for sensitive data.</p>
+                </div>
+                <div class="section-card p-6">
+                    <div class="flex items-center">
+                        <div class="text-3xl mr-4">✅</div>
+                        <h4 class="text-lg font-semibold">Verify, Don't Trust</h4>
+                    </div>
+                    <p class="mt-3 text-slate-600">Always treat AI output as a first draft. You are the expert. Review all generated content for accuracy, context, and nuance before using it. This is the "human in the loop" principle, and it is non-negotiable.</p>
+                </div>
+                <div class="section-card p-6">
+                     <div class="flex items-center">
+                        <div class="text-3xl mr-4">🎯</div>
+                        <h4 class="text-lg font-semibold">Understand the Limits</h4>
+                    </div>
+                    <p class="mt-3 text-slate-600">AI does not "understand" or "think." It is a pattern-matching machine. It is not a substitute for professional judgment, legal advice, or clinical assessment. Use it to augment your expertise, not replace it.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="scroll-mt-20">
+            <div class="bg-slate-800 text-white rounded-lg p-10 text-center">
+                <h3 class="text-3xl font-bold">Your AI Co-Pilot</h3>
+                <p class="mt-3 max-w-2xl mx-auto text-slate-300">The goal of AI is not to replace your professional expertise, but to handle the repetitive, time-consuming tasks, freeing you to focus on what humans do best: strategy, empathy, and building relationships.</p>
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <span class="bg-red-500/20 text-red-200 text-sm font-medium px-4 py-2 color-red-200 rounded-full">Save Time on Paperwork</span>
+                    <span class="bg-green-500/20 text-green-200 text-sm font-medium px-4 py-2 rounded-full">Personalize Client Communication</span>
+                    <span class="bg-purple-500/20 text-purple-200 text-sm font-medium px-4 py-2 rounded-full">Focus on High-Value Work</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="cta" class="scroll-mt-20">
+            <div class="section-card p-8 text-center">
+                <h3 class="text-3xl font-bold neumind-slate">Interested in trying neumind?</h3>
+                <h4 class="text-xl font-semibold neumind-slate">Create your free account and take a look!</h4>
+                <div class="mt-6">
+                    <a href="https://www.neumind.co.uk/get-started" class="inline-flex items-center rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white hover:bg-blue-700">Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="scroll-mt-20">
+            <div class="section-card p-8 text-center">
+                <h4 class="text-xl font-semibold neumind-slate">Any questions or would like to connect, my email is: <a href="mailto:ellis@neumind.co.uk" class="text-blue-600 hover:underline">ellis@neumind.co.uk</a> or <a href="https://calendly.com/ellis-neumind/demo-call" class="text-blue-600 hover:underline">Schedule a Call</a></h4>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            const linkHref = link.getAttribute('href');
+                            if (linkHref && linkHref.substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-40% 0px -40% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
+
